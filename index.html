@@ -7,7 +7,68 @@
     <title>Library</title>
 </head>
 <body>
-    
+    <header>
+        <h1>My library</h1>
+        <nav>
+            <button type="button" class="btn-new">New book</button>
+
+            <div class="sort">
+                <form action="" class="form-sort">
+                    <label for="sort-select">Sort by:</label>
+                    <select name="sort" id="sort-select">
+                        <option value="date-added">date added</option>
+                        <option value="date-published">date published</option>
+                        <option value="title">title</option>
+                    </select>
+                </form>
+
+                <form action="" class="form-view">
+                    <div>view:</div>
+                    <input type="radio" id="ascending" name="view">
+                    <label for="ascending">ascending</label>
+                    <input type="radio" id= "descending" name="view">
+                    <label for="descending">descending</label>
+                </form>
+
+                <form action="" class="form-status">
+                    <div>status:</div>
+                    <input type="radio" id="all" name="status" value="all">
+                    <label for="all">all</label>
+                    <input type="radio" id="read" name="status" value="read">
+                    <label for="read">read</label>
+                    <input type="radio" id="not-read" name="status" value="not-read">
+                    <label for="not-read">not read</label>
+                </form>
+
+                <button type="button" class="btn-select">Select</button>
+                <button type="button" class="btn-delete-all">Delete all</button>
+            </div>
+        </nav>
+    </header>
+
+    <dialog id="dialog-new">
+        <form action="dialog">
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title">
+
+            <label for="author">Author</label>
+            <input type="text" name="author" id="author">
+
+            <label for="pages">Number of pages</label>
+            <input type="number" name="pages" id="pages" pattern="">
+
+            <label for="status">Read</label>
+            <input type= "radio" name="status" id="status" value="read">
+
+            <button type="button" id="submit">Add</button>
+            <button type="button" id="cancel">Cancel</button>
+        </form>
+    </dialog>
+
+    <main>
+
+    </main>
+
     <script src="scr.js" defer></script>
 </body>
 </html>

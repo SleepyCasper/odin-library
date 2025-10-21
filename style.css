@@ -90,4 +90,65 @@ summary {
 }
 
 /*////////////////////////////////////////////////////////*/
+:root {
+    --bg-dark: hsl(2 100% 93%);
+    --bg: hsl(2 100% 98%);
+    --bg-light: hsl(2 100% 100%);
+    --text: hsl(350 100% 6%);
+    --text-muted: hsl(357 44% 32%);
+    --highlight: hsl(1 100% 100%);
+    --border: hsl(360 34% 55%);
+    --border-muted: hsl(0 49% 68%);
+    --primary: hsl(357 44% 32%);
+    --secondary: hsl(183 100% 9%);
+    --danger: hsl(8 40% 42%);
+    --warning: hsl(52 82% 24%);
+    --success: hsl(154 58% 29%);
+    --info: hsl(217 42% 43%);
+}
 
+* {
+    outline: 1px solid red;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+body::backdrop {
+    filter: brightness(50%);
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-dark);
+}
+
+h1 {
+    padding: 2rem;
+}
+
+nav {
+    display: flex;
+    gap: 1rem;
+    padding: 0 2rem 1rem 2rem;
+    
+}
+
+.sort,
+.form-view,
+.form-status {
+    display: flex;
+}
+
+.sort {
+    gap: 1.5rem;
+}
+
+
+
+main {
+    background-color: var(--bg);
+}
