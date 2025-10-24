@@ -9,7 +9,7 @@
 html {
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
-    tab-size: 4; 
+    tab-size: 4;
 }
 
 strong {
@@ -130,8 +130,10 @@ button {
 }
 
 body {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh; 
+    background-color: var(--bg);
 }
 
 body::backdrop {
@@ -204,7 +206,14 @@ nav {
     flex-direction: column;
 }
 
+nav .wrapper-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
 main {
+    display: flex;
+    flex-direction: column;
     background-color: var(--bg);
 }
 
@@ -212,8 +221,9 @@ main {
     display: grid;
     grid-template-columns: repeat(auto-fit, 15rem);
     gap: 2rem;
-    margin: 2rem auto;
-    max-width: 60rem;
+    margin: auto;
+    max-width: 65rem;
+    padding: 2.5rem;
     height: auto;
     justify-content: center;
 }
@@ -224,4 +234,10 @@ main {
     gap: 0.5rem;
     padding: 1rem;
     height: 15rem;
+}
+
+.credit {
+    margin-top: auto;
+    padding: 0.5rem;
+    text-align: center;
 }

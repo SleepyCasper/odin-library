@@ -17,7 +17,7 @@
                     <label for="sort-select">Sort by:</label>
                     <select name="sort" id="sort-select">
                         <option value="date-added">date added</option>
-                        <option value="date-published">date published</option>
+                        <option value="date-finished">date finished</option>
                         <option value="title">title</option>
                     </select>
                 </form>
@@ -29,7 +29,7 @@
                         <label for="ascending">ascending</label>
                     </div>
                     <div class="wrapper">
-                        <input type="radio" id= "descending" name="view">
+                        <input type="radio" id= "descending" name="view" checked>
                         <label for="descending">descending</label>
                     </div>
                 </form>
@@ -37,21 +37,23 @@
                 <form action="" class="form-status">
                     <div>status:</div>
                     <div class="wrapper">
-                        <input type="radio" id="all" name="status" value="all">
+                        <input type="radio" id="all" name="status" value="all" checked>
                         <label for="all">all</label>
                     </div>
                     <div class="wrapper">
-                        <input type="radio" id="read" name="status" value="read">
+                        <input type="radio" id="read" name="status">
                         <label for="read">read</label>
                     </div>
                     <div class="wrapper">
-                        <input type="radio" id="not-read" name="status" value="not-read">
+                        <input type="radio" id="not-read" name="status">
                         <label for="not-read">not read</label>
                     </div>
                 </form>
 
-                <button type="button" class="btn-select">Select</button>
-                <button type="button" class="btn-delete-all">Delete all</button>
+                <div class="wrapper-buttons">
+                    <button type="button" class="btn-select">Select</button>
+                    <button type="button" class="btn-delete-all">Delete all</button>
+                </div>
             </div>
         </nav>
     </header>
@@ -92,8 +94,9 @@
 
     <main>
         <div class="wrapper-cards">
-            
+
         </div>
+        <p class="credit">Made by <a href="https://github.com/SleepyCasper" target="_blank">SleepyCasper</a></p>
     </main>
 
     <script src="scr.js" defer></script>

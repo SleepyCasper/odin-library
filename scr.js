@@ -1,7 +1,10 @@
 /////// Sort and filter
-const sortDropdown = document.querySelector(".sort-select");
-const sortOrder = document.querySelector(".form-view");
-const filterStatus = document.querySelector(".form-status");
+const sortDropdown = document.getElementById("sort-select");
+const radioAscending = document.getElementById("ascending");
+const radioDescending = document.getElementById("descending");
+const radioAll = document.getElementById("all");
+const radioRead = document.getElementById("read");
+const radioNotRead = document.getElementById("not-read");
 
 /////// Add, select, delete buttons
 const btnSelect = document.querySelector(".btn-select");
@@ -23,7 +26,62 @@ const btnCancel = document.getElementById("cancel");
 ////// Cards field
 const wrapperCards = document.querySelector(".wrapper-cards");
 
-let myLibrary = [];
+let myLibrary = [
+    {
+        "id": "ea1004e5-73c3-4134-b4ad-9744884ca644",
+        "title": "harry potter",
+        "author": "rowling",
+        "pages": "123",
+        "status": "read",
+        "dateFinished": "2025-10-10",
+        "dateAdded": new Date("2025-01-15")
+    },
+    {
+        "id": "ea1004e5-73c3-4134-b4ad-9744884ca645",
+        "title": "lord of the ring",
+        "author": "tolkien",
+        "pages": "123",
+        "status": "read",
+        "dateFinished": "2025-10-20",
+        "dateAdded": new Date("2025-01-16")
+    },
+    {
+        "id": "ea1004e5-73c3-4134-b4ad-9744884ca646",
+        "title": "killing mockingbird",
+        "author": "123",
+        "pages": "123",
+        "status": "not read",
+        "dateFinished": "2025-10-21",
+        "dateAdded": new Date("2025-01-17")
+    },
+    {
+        "id": "ea1004e5-73c3-4134-b4ad-9744884ca648",
+        "title": "of mice and men",
+        "author": "123",
+        "pages": "123",
+        "status": "not read",
+        "dateFinished": "2025-10-22",
+        "dateAdded": new Date("2025-01-18")
+    },
+    {
+        "id": "ea1004e5-73c3-4134-b4ad-9744884ca640",
+        "title": "Percy Jackson",
+        "author": "123",
+        "pages": "123",
+        "status": "not read",
+        "dateFinished": "2025-10-23",
+        "dateAdded": new Date("2025-01-19")
+    },
+    {
+        "id": "ea1004e5-73c3-4134-b4ad-9744884ca641",
+        "title": "Alice in Wonderland",
+        "author": "123",
+        "pages": "123",
+        "status": "not read",
+        "dateFinished": "2025-10-24",
+        "dateAdded": new Date("2025-01-20")
+    },
+];
 
 function book(title, author, pages, status, dateFinished) {
     this.id = crypto.randomUUID();
@@ -32,6 +90,7 @@ function book(title, author, pages, status, dateFinished) {
     this.pages = pages;
     this.status = status;
     this.dateFinished = dateFinished;
+    this.dateAdded = new Date();
 }
 
 function statusCheck() {
@@ -73,7 +132,7 @@ function addAllBookCards() {
     myLibrary.forEach((book) => {
         let bookCard = document.createElement("div");
         bookCard.classList.add("card");
-        bookCard.id = book.id;
+        bookCard.dataset.id = book.id;
 
         bookCard.innerHTML = `
             <h2 class="card-title">${book.title}</h2>
@@ -87,6 +146,65 @@ function addAllBookCards() {
     })
 }
 
+function sortBooks() {
+    const isAscending = radioAscending.checked;
+
+    if (sortDropdown.value === "title") {
+        myLibrary.sort((a, b) => {
+            return isAscending 
+                ? a.title.localeCompare(b.title)
+                : b.title.localeCompare(a.title);
+        });
+    }
+
+    if (sortDropdown.value === "date-added") {
+        myLibrary.sort((a, b) => {
+            return isAscending
+                ? a.dateAdded - b.dateAdded  // Oldest first
+                : b.dateAdded - a.dateAdded; // Newest first
+        });
+    }
+
+    if (sortDropdown.value === "date-finished") {
+        myLibrary.sort((a, b) => {
+            if (!a.dateFinished) return 1;
+            if (!b.dateFinished) return -1;
+
+            return isAscending
+                ? a.dateFinished.localeCompare(b.dateFinished)
+                : b.dateFinished.localeCompare(a.dateFinished);
+        });
+    }
+    addAllBookCards();
+}
+
+function filter() {
+    const cards = document.querySelectorAll(".card");
+    cards.forEach(card => {
+        const book = myLibrary.find(b => b.id === card.dataset.id);
+
+        if (radioAll.checked) {
+            card.style.display = "flex";
+        } 
+        else if (radioRead.checked) {
+            if (book.status === "read") {
+                card.style.display = "flex";
+            } else {
+                card.style.display = "none";
+            }
+        } 
+        else if (radioNotRead.checked) {
+            if (book.status === "not read") {
+                card.style.display = "flex";
+            } else {
+                card.style.display = "none";
+            }
+        }
+    });
+}
+
+addAllBookCards();
+
 btnNewBook.addEventListener("click", () => {
     dialogNew.showModal();
 })
@@ -96,9 +214,11 @@ inputStatus.addEventListener("change", () => {
 })
 
 form.addEventListener("submit", (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
     addBookToMyLibrary();
+    sortBooks();
     addAllBookCards();
+    filter();
     dialogNew.close();
     resetForm();
 })
@@ -107,3 +227,22 @@ btnCancel.addEventListener("click", () => {
     dialogNew.close();
     resetForm();
 })
+
+sortDropdown.addEventListener("change", () => {
+    sortBooks();
+    filter();
+})
+
+radioAscending.addEventListener("change", () => {
+    sortBooks();
+    filter();
+})
+
+radioDescending.addEventListener("change", () => {
+    sortBooks();
+    filter();
+})
+
+radioAll.addEventListener("change", filter);
+radioRead.addEventListener("change", filter);
+radioNotRead.addEventListener("change", filter);
