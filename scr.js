@@ -29,57 +29,63 @@ const wrapperCards = document.querySelector(".wrapper-cards");
 let myLibrary = [
     {
         "id": "ea1004e5-73c3-4134-b4ad-9744884ca644",
-        "title": "harry potter",
-        "author": "rowling",
-        "pages": "123",
+        "title": "Harry Potter and Goblet of Fire",
+        "author": "J.K. Rowling",
+        "pages": "636",
         "status": "read",
         "dateFinished": "2025-10-10",
-        "dateAdded": new Date("2025-01-15")
+        "dateAdded": new Date("2025-01-15"),
+        "coverColor": "hsla(120, 60%, 50%, 0.3)",
     },
     {
         "id": "ea1004e5-73c3-4134-b4ad-9744884ca645",
-        "title": "lord of the ring",
-        "author": "tolkien",
-        "pages": "123",
+        "title": "Lord of The Ring",
+        "author": "J.R.R. Tolkien",
+        "pages": "1077",
         "status": "read",
         "dateFinished": "2025-10-20",
-        "dateAdded": new Date("2025-01-16")
+        "dateAdded": new Date("2025-01-16"),
+        "coverColor": "hsla(220, 60%, 50%, 0.30)",
     },
     {
         "id": "ea1004e5-73c3-4134-b4ad-9744884ca646",
-        "title": "killing mockingbird",
-        "author": "123",
-        "pages": "123",
+        "title": "To Kill a Mockingbird",
+        "author": "Harper Lee",
+        "pages": "281",
         "status": "not read",
-        "dateFinished": "2025-10-21",
-        "dateAdded": new Date("2025-01-17")
+        "dateFinished": null,
+        "dateAdded": new Date("2025-01-17"),
+        "coverColor": "hsla(56, 60%, 50%, 0.30)",
     },
     {
         "id": "ea1004e5-73c3-4134-b4ad-9744884ca648",
-        "title": "of mice and men",
-        "author": "123",
-        "pages": "123",
+        "title": "Of Mice and Men",
+        "author": "John Steinbeck",
+        "pages": "107",
         "status": "not read",
-        "dateFinished": "2025-10-22",
-        "dateAdded": new Date("2025-01-18")
+        "dateFinished": null,
+        "dateAdded": new Date("2025-01-18"),
+        "coverColor": "hsla(283, 60%, 50%, 0.30)",
     },
     {
         "id": "ea1004e5-73c3-4134-b4ad-9744884ca640",
-        "title": "Percy Jackson",
-        "author": "123",
-        "pages": "123",
+        "title": "Percy Jackson. The Lightning Thief",
+        "author": "Rick Riordan",
+        "pages": "	377",
         "status": "not read",
-        "dateFinished": "2025-10-23",
-        "dateAdded": new Date("2025-01-19")
+        "dateFinished": null,
+        "dateAdded": new Date("2025-01-19"),
+        "coverColor": "hsla(9, 60%, 50%, 0.30)",
     },
     {
         "id": "ea1004e5-73c3-4134-b4ad-9744884ca641",
         "title": "Alice in Wonderland",
-        "author": "123",
-        "pages": "123",
+        "author": "Lewis Carroll",
+        "pages": "192",
         "status": "not read",
-        "dateFinished": "2025-10-24",
-        "dateAdded": new Date("2025-01-20")
+        "dateFinished": null,
+        "dateAdded": new Date("2025-01-20"),
+        "coverColor": "hsla(194, 60%, 50%, 0.30)",
     },
 ];
 
@@ -91,6 +97,11 @@ function book(title, author, pages, status, dateFinished) {
     this.status = status;
     this.dateFinished = dateFinished;
     this.dateAdded = new Date();
+
+    const hue = Math.floor(Math.random() * 360);
+    const saturation = Math.floor(Math.random() * 30) + 50;
+    const lightness = Math.floor(Math.random() * 20) + 40;
+    this.coverColor = `hsla(${hue}, ${saturation}%, ${lightness}%, 0.3)`;
 }
 
 function statusCheck() {
@@ -133,14 +144,16 @@ function addAllBookCards() {
         let bookCard = document.createElement("div");
         bookCard.classList.add("card");
         bookCard.dataset.id = book.id;
+        bookCard.style.setProperty('--card-tint', book.coverColor); 
 
         bookCard.innerHTML = `
             <h2 class="card-title">${book.title}</h2>
-            <p>Author: ${book.author}</p>
-            <p>Pages: ${book.pages}</p>
-            <p>Status: ${book.status}</p>
-            ${book.dateFinished ? `<p>Finished: ${book.dateFinished}</p>` : ''}
-            `;
+            <div class="pop-up">
+                <p>Author: ${book.author}</p>
+                <p>Pages: ${book.pages}</p>
+                <p>Status: ${book.status}</p>
+                ${book.dateFinished ? `<p>Finished: ${book.dateFinished}</p>` : ''}
+            </div>`;
 
         wrapperCards.appendChild(bookCard);
     })
