@@ -10,7 +10,7 @@
     <header>
         <h1>My library</h1>
         <nav>
-            <button type="button" class="btn-new">New book</button>
+            <button type="button" id="btn-new">New book</button>
 
             <div class="sort">
                 <form action="" class="form-sort">
@@ -51,8 +51,9 @@
                 </form>
 
                 <div class="wrapper-buttons">
-                    <button type="button" class="btn-select">Select</button>
-                    <button type="button" class="btn-delete-all">Delete all</button>
+                    <button type="button" id="btn-select">Select</button>
+                    <button type="button" id="btn-select-all">Select all</button>
+                    <button type="button" id="btn-delete">Delete</button>
                 </div>
             </div>
         </nav>
@@ -90,6 +91,12 @@
                 <button type="button" id="cancel">Cancel</button>
             </div>
         </form>
+    </dialog>
+
+    <dialog id="dialog-delete">
+        <p>Are you sure you want to delete selected books?</p>
+        <button type="button" id="btn-delete-yes">Yes</button>
+        <button class="button" id="btn-delete-no">No</button>
     </dialog>
 
     <main>

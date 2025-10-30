@@ -7,9 +7,13 @@ const radioRead = document.getElementById("read");
 const radioNotRead = document.getElementById("not-read");
 
 /////// Add, select, delete buttons
-const btnSelect = document.querySelector(".btn-select");
-const bthDeleteAll = document.querySelector(".btn-delete-all");
-const btnNewBook = document.querySelector(".btn-new")
+const btnSelect = document.getElementById("btn-select");
+const btnSelectAll = document.getElementById("btn-select-all");
+const btnDelete = document.getElementById("btn-delete");
+const btnNewBook = document.getElementById("btn-new");
+const dialogDelete = document.getElementById("dialog-delete");
+const btnDeleteYes = document.getElementById("btn-delete-yes");
+const btnDeleteNo = document.getElementById("btn-delete-no");
 
 /////// Form dialog
 const form = document.getElementById("form");
@@ -24,7 +28,8 @@ const btnAdd = document.getElementById("submit");
 const btnCancel = document.getElementById("cancel");
 
 ////// Cards field
-const wrapperCards = document.querySelector(".wrapper-cards");
+const containerCards = document.querySelector(".wrapper-cards");
+const cards = document.querySelectorAll(".card");
 
 let myLibrary = [
     {
@@ -139,8 +144,17 @@ function addBookToMyLibrary() {
 }
 
 function addAllBookCards() {
-    wrapperCards.innerHTML = "";
+    containerCards.innerHTML = "";
     myLibrary.forEach((book) => {
+        let cardWrapper = document.createElement("div");
+        cardWrapper.classList.add("card-wrapper");
+        cardWrapper.dataset.id = book.id;
+
+        let selectCheckbox = document.createElement("input");
+        selectCheckbox.setAttribute("type", "checkbox");
+        selectCheckbox.classList.add("card-checkbox");
+        selectCheckbox.dataset.id = book.id; // Link to book
+
         let bookCard = document.createElement("div");
         bookCard.classList.add("card");
         bookCard.dataset.id = book.id;
@@ -155,8 +169,16 @@ function addAllBookCards() {
                 ${book.dateFinished ? `<p>Finished: ${book.dateFinished}</p>` : ''}
             </div>`;
 
-        wrapperCards.appendChild(bookCard);
+        cardWrapper.appendChild(selectCheckbox);
+        cardWrapper.appendChild(bookCard);
+        containerCards.appendChild(cardWrapper);
     })
+
+    ////// Checking for selected checkboxes and updating delete button
+    const checkboxes = document.querySelectorAll(".card-checkbox");
+    checkboxes.forEach(cb => cb.addEventListener("change", updateDeleteButtonState));
+
+    updateDeleteButtonState();
 }
 
 function sortBooks() {
@@ -191,9 +213,20 @@ function sortBooks() {
     addAllBookCards();
 }
 
+function uncheckHiddenBooks() {
+    const cardWrappers = document.querySelectorAll(".card-wrapper");
+    cardWrappers.forEach(wrapper => {
+        const checkbox = wrapper.querySelector(".card-checkbox");
+        if (wrapper.style.display === "none" && checkbox.checked) {
+            checkbox.checked = false;
+        }
+    });
+}
+
 function filter() {
-    const cards = document.querySelectorAll(".card");
-    cards.forEach(card => {
+    const cardWrapper = document.querySelectorAll(".card-wrapper");
+
+    cardWrapper.forEach(card => {
         const book = myLibrary.find(b => b.id === card.dataset.id);
 
         if (radioAll.checked) {
@@ -214,9 +247,66 @@ function filter() {
             }
         }
     });
+
+    uncheckHiddenBooks();
+    updateDeleteButtonState();
+}
+
+function showCheckboxes() {
+    const checkboxes = document.querySelectorAll(".card-checkbox");
+    checkboxes.forEach(cb => cb.classList.add("visible"));
+    updateDeleteButtonState();
+}
+
+function hideCheckboxes() {
+    const checkboxes = document.querySelectorAll(".card-checkbox");
+    checkboxes.forEach(cb => {
+        cb.classList.remove("visible");
+        cb.checked = false; // Uncheck when hiding
+    });
+    updateDeleteButtonState();
+}
+
+function selectAll(e) {
+    const checkboxes = document.querySelectorAll(".card-checkbox");
+    if (e.target.textContent === "Select all") {
+        checkboxes.forEach(cb => cb.checked = true);
+        e.target.textContent = "Unselect all";
+    } else {
+        checkboxes.forEach(cb => cb.checked = false);
+        e.target.textContent = "Select all";
+    }
+    updateDeleteButtonState();
+}
+
+function deleteSelected() {
+    const checkboxes = document.querySelectorAll(".card-checkbox");
+    checkboxes.forEach(checkbox => {
+        const book = myLibrary.find(b => b.id === checkbox.dataset.id);
+        if (checkbox.checked) {
+            let index = myLibrary.indexOf(book);  
+            myLibrary.splice(index, 1);
+        }
+    })
+
+    sortBooks();
+    addAllBookCards();
+    filter();
+}
+
+function updateDeleteButtonState() {
+    const checkboxes = document.querySelectorAll(".card-checkbox");
+    const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+
+    btnDelete.disabled = !anyChecked;
+}
+
+function deleteDialog() {
+    dialogDelete.showModal();
 }
 
 addAllBookCards();
+btnDelete.disabled = true;
 
 btnNewBook.addEventListener("click", () => {
     dialogNew.showModal();
@@ -259,3 +349,22 @@ radioDescending.addEventListener("change", () => {
 radioAll.addEventListener("change", filter);
 radioRead.addEventListener("change", filter);
 radioNotRead.addEventListener("change", filter);
+
+btnSelect.addEventListener("click", showCheckboxes);
+btnSelectAll.addEventListener("click", (e) => {
+    showCheckboxes();
+    selectAll(e);
+});   
+
+btnDelete.addEventListener("click", () => {
+    deleteDialog();
+});
+
+btnDeleteYes.addEventListener("click", () => {
+    deleteSelected();
+    dialogDelete.close();
+});
+
+btnDeleteNo.addEventListener("click", () => {
+    dialogDelete.close();
+});
