@@ -91,19 +91,13 @@ summary {
 
 /*////////////////////////////////////////////////////////*/
 :root {
-    --bg-dark: hsl(2 100% 93%);
-    --bg: hsl(2 100% 98%);
-    --bg-light: hsl(2 100% 100%);
-    --bg-button: hsl(357 44% 32%);
-    --highlight: hsl(1 100% 100%);
-    --border: hsl(360 49% 55%);
-    --border-muted: hsl(0 49% 78%);
-    --primary: hsl(357 44% 32%);
-    --secondary: hsl(183 100% 9%);
-    --danger: hsl(8 40% 42%);
-    --warning: hsl(52 82% 24%);
-    --success: hsl(154 58% 29%);
-    --info: hsl(217 42% 43%);
+    --color-primary-light: hsl(69, 52%, 95%);
+    --color-primary: hsl(70, 50%, 90%);
+    --color-secondary: hsl(70, 50%, 10%);
+    --color-tertiary: hsl(130, 80%, 20%);
+    --color-accent: hsl(10, 80%, 20%);
+    --color-danger: hsl(10, 80%, 30%);
+    --color--success: hsl(122, 80%, 30%);
 }
 
 * {
@@ -123,8 +117,8 @@ button {
     cursor: pointer;
     border: none;
     border-radius: 0.3rem;
-    background-color: var(--bg-button);
-    color: var(--highlight);
+    background-color: var(--color-tertiary);
+    color: var(--color-primary);
     padding: 0.6rem 0.8rem;
 }
 
@@ -132,7 +126,6 @@ body {
     display: grid;
     grid-template-rows: auto 1fr;
     min-height: 100vh; 
-    background-color: var(--bg);
 }
 
 body::backdrop {
@@ -142,12 +135,13 @@ body::backdrop {
 header {
     display: flex;
     flex-direction: column;
-    background-color: var(--bg-dark);
+    background-color: var(--color-primary);
 }
 
 h1 {
     font-size: 2.4rem;
     padding: 1.6rem 2rem;
+    color: var(--color-secondary);
 }
 
 nav {
@@ -171,13 +165,12 @@ nav {
     gap: 0.5rem;
 }
 
-#dialog-new {
+dialog {
     font-size: 1.3rem;
     margin: auto;
     padding: 1em;
     border-radius: 0.5rem;
-    background-color: var(--bg);
-    /* border: 3px solid var(--border); */
+    background-color: var(--color-primary-light);
     border: none;
 }
 
@@ -211,19 +204,27 @@ nav .wrapper-buttons {
 }
 
 #btn-delete:disabled {
-  background-color: hsl(357 8% 42%);
+  background-color: hsl(137, 3%, 45%);
   cursor: not-allowed;
 }
 
 #btn-delete {
-  background-color: var(--bg-button);
+  background-color: var(--color-danger);
   transition: background 0.2s;
+}
+
+#btn-delete-no {
+    background-color: var(--color-danger);
+}
+
+#btn-delete-yes {
+    background-color: var(--color--success);
 }
 
 main {
     display: flex;
     flex-direction: column;
-    background-color: var(--bg);
+    background-color: var(--color-primary-light);
     align-items: center; 
 }
 
@@ -245,9 +246,32 @@ main {
     display: flex;
     align-items: start;
     gap: var(--card-wrapper-gap);
-    height: 20.4rem;
+    height: 19.8rem;
 }
 
+.options-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    padding-top: 0.2rem;
+}
+
+.read-icon {
+    background-size:contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    height: 2rem;
+}
+
+.read-icon.read {
+    background-image: url(icons/book-check.svg);
+}
+
+.read-icon.not-read {
+    background-image: url(icons/book-clock.svg);
+}
 .card {
     position: relative;
     margin-left: auto;

@@ -31,6 +31,8 @@ const btnCancel = document.getElementById("cancel");
 const containerCards = document.querySelector(".wrapper-cards");
 const cards = document.querySelectorAll(".card");
 
+const dialogCalendar = document.getElementById("dialog-calendar-finished")
+
 let myLibrary = [
     {
         "id": "ea1004e5-73c3-4134-b4ad-9744884ca644",
@@ -146,6 +148,9 @@ function addBookToMyLibrary() {
 function addAllBookCards() {
     containerCards.innerHTML = "";
     myLibrary.forEach((book) => {
+        const optionsWrapper = document.createElement("div");
+        optionsWrapper.classList.add("options-wrapper");
+
         let cardWrapper = document.createElement("div");
         cardWrapper.classList.add("card-wrapper");
         cardWrapper.dataset.id = book.id;
@@ -154,6 +159,11 @@ function addAllBookCards() {
         selectCheckbox.setAttribute("type", "checkbox");
         selectCheckbox.classList.add("card-checkbox");
         selectCheckbox.dataset.id = book.id; // Link to book
+
+        let readIcon = document.createElement("button");
+        readIcon.setAttribute("type", "button");
+        readIcon.classList.add("read-icon");
+        readIcon.dataset.id = book.id;
 
         let bookCard = document.createElement("div");
         bookCard.classList.add("card");
@@ -169,7 +179,9 @@ function addAllBookCards() {
                 ${book.dateFinished ? `<p>Finished: ${book.dateFinished}</p>` : ''}
             </div>`;
 
-        cardWrapper.appendChild(selectCheckbox);
+        cardWrapper.appendChild(optionsWrapper)
+        optionsWrapper.appendChild(readIcon);
+        optionsWrapper.appendChild(selectCheckbox);
         cardWrapper.appendChild(bookCard);
         containerCards.appendChild(cardWrapper);
     })
@@ -178,6 +190,14 @@ function addAllBookCards() {
     const checkboxes = document.querySelectorAll(".card-checkbox");
     checkboxes.forEach(cb => cb.addEventListener("change", updateDeleteButtonState));
 
+    const readIcons = document.querySelectorAll(".read-icon");
+    readIcons.forEach(icon => {
+        icon.addEventListener("click", (e) => {
+            changeReadStatus(e.target);
+        });
+    })
+
+    setReadStatusIcon();
     updateDeleteButtonState();
 }
 
@@ -305,7 +325,72 @@ function deleteDialog() {
     dialogDelete.showModal();
 }
 
+function setReadStatusIcon() {
+    const readIcons = document.querySelectorAll(".read-icon");
+    readIcons.forEach(icon => {
+        const book = myLibrary.find(b => b.id === icon.dataset.id);
+        if (book.status === "read") {
+            icon.classList.add("read");
+            icon.classList.remove("not-read");
+        } else {
+            icon.classList.add("not-read")
+            icon.classList.remove("read");
+        }
+    })
+}
+
+function changeReadStatus(icon) {
+    const inputCalendar = document.getElementById("date-finished");
+    const cardWrapper = icon.closest('.card-wrapper');
+    const card = cardWrapper.querySelector('.card');
+    const popup = card.querySelector('.pop-up');
+    const book = myLibrary.find(b => b.id === icon.dataset.id);
+
+    function updatePopup() {
+        popup.innerHTML = `
+        <p>Author: ${book.author}</p>
+        <p>Pages: ${book.pages}</p>
+        <p>Status: ${book.status}</p>
+        ${book.dateFinished ? `<p>Finished: ${book.dateFinished}</p>` : ''}
+        `;
+    }    
+    
+    dialogCalendar.setAttribute("closedby", "any")
+
+    if (book.status === "not read") {
+        dialogCalendar.showModal();
+
+        // Handle date selection
+        const handleDateChange = () => {
+            if (inputCalendar.value !== "") {
+                book.status = "read";
+                book.dateFinished = inputCalendar.value;
+                icon.classList.add("read");
+                icon.classList.remove("not-read");
+                updatePopup();
+                dialogCalendar.close();
+                filter();
+                sortBooks();
+            }
+        };
+
+        inputCalendar.addEventListener("change", handleDateChange, { once: true });
+    } else {
+        book.status = "not read";
+        book.dateFinished = null;
+        icon.classList.add("not-read")
+        icon.classList.remove("read");
+        updatePopup();
+        filter();
+        console.log(inputCalendar.value);
+    }
+
+    inputCalendar.value = "";
+}
+
+sortBooks();
 addAllBookCards();
+
 btnDelete.disabled = true;
 
 btnNewBook.addEventListener("click", () => {
