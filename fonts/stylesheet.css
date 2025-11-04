@@ -1,0 +1,54 @@
+@font-face {
+    font-family: 'Zain';
+    src: url('Zain-Regular.woff2') format('woff2'),
+        url('Zain-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Zain';
+    src: url('Zain-ExtraBold.woff2') format('woff2'),
+        url('Zain-ExtraBold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Quintessential';
+    src: url('Quintessential-Regular.woff2') format('woff2'),
+        url('Quintessential-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Zain';
+    src: url('Zain-Bold.woff2') format('woff2'),
+        url('Zain-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Eagle Lake';
+    src: url('EagleLake-Regular.woff2') format('woff2'),
+        url('EagleLake-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Zain';
+    src: url('Zain-Light.woff2') format('woff2'),
+        url('Zain-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+

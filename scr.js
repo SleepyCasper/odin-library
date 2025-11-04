@@ -173,10 +173,10 @@ function addAllBookCards() {
         bookCard.innerHTML = `
             <h2 class="card-title">${book.title}</h2>
             <div class="pop-up">
-                <p>Author: ${book.author}</p>
-                <p>Pages: ${book.pages}</p>
-                <p>Status: ${book.status}</p>
-                ${book.dateFinished ? `<p>Finished: ${book.dateFinished}</p>` : ''}
+                <p><span>Author:</span> ${book.author}</p>
+                <p><span>Pages:</span> ${book.pages}</p>
+                <p><span>Status:</span> ${book.status}</p>
+                ${book.dateFinished ? `<p><span>Finished:</span> ${book.dateFinished}</p>` : ''}
             </div>`;
 
         cardWrapper.appendChild(optionsWrapper)
@@ -348,14 +348,14 @@ function changeReadStatus(icon) {
 
     function updatePopup() {
         popup.innerHTML = `
-        <p>Author: ${book.author}</p>
-        <p>Pages: ${book.pages}</p>
-        <p>Status: ${book.status}</p>
-        ${book.dateFinished ? `<p>Finished: ${book.dateFinished}</p>` : ''}
+        <p><span>Author:</span> ${book.author}</p>
+        <p><span>Pages:</span> ${book.pages}</p>
+        <p><span>Status:</span> ${book.status}</p>
+        ${book.dateFinished ? `<p><span>Finished:</span> ${book.dateFinished}</p>` : ''}
         `;
     }    
     
-    dialogCalendar.setAttribute("closedby", "any")
+    dialogCalendar.setAttribute("closedBy", "any")
 
     if (book.status === "not read") {
         dialogCalendar.showModal();
