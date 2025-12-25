@@ -97,6 +97,7 @@ let myLibrary = [
 ];
 
 function book(title, author, pages, status, dateFinished) {
+    a
     this.id = crypto.randomUUID();
     this.title = title;
     this.author = author;
