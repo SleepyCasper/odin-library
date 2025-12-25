@@ -33,84 +33,89 @@ const cards = document.querySelectorAll(".card");
 
 const dialogCalendar = document.getElementById("dialog-calendar-finished")
 
-let myLibrary = [
-    {
-        "id": "ea1004e5-73c3-4134-b4ad-9744884ca644",
-        "title": "Harry Potter and Goblet of Fire",
-        "author": "J.K. Rowling",
-        "pages": "636",
-        "status": "read",
-        "dateFinished": "2025-10-10",
-        "dateAdded": new Date("2025-01-15"),
-        "coverColor": "hsla(120, 60%, 50%, 0.3)",
-    },
-    {
-        "id": "ea1004e5-73c3-4134-b4ad-9744884ca645",
-        "title": "Lord of The Ring",
-        "author": "J.R.R. Tolkien",
-        "pages": "1077",
-        "status": "read",
-        "dateFinished": "2025-10-20",
-        "dateAdded": new Date("2025-01-16"),
-        "coverColor": "hsla(220, 60%, 50%, 0.30)",
-    },
-    {
-        "id": "ea1004e5-73c3-4134-b4ad-9744884ca646",
-        "title": "To Kill a Mockingbird",
-        "author": "Harper Lee",
-        "pages": "281",
-        "status": "not read",
-        "dateFinished": null,
-        "dateAdded": new Date("2025-01-17"),
-        "coverColor": "hsla(56, 60%, 50%, 0.30)",
-    },
-    {
-        "id": "ea1004e5-73c3-4134-b4ad-9744884ca648",
-        "title": "Of Mice and Men",
-        "author": "John Steinbeck",
-        "pages": "107",
-        "status": "not read",
-        "dateFinished": null,
-        "dateAdded": new Date("2025-01-18"),
-        "coverColor": "hsla(283, 60%, 50%, 0.30)",
-    },
-    {
-        "id": "ea1004e5-73c3-4134-b4ad-9744884ca640",
-        "title": "Percy Jackson. The Lightning Thief",
-        "author": "Rick Riordan",
-        "pages": "	377",
-        "status": "not read",
-        "dateFinished": null,
-        "dateAdded": new Date("2025-01-19"),
-        "coverColor": "hsla(9, 60%, 50%, 0.30)",
-    },
-    {
-        "id": "ea1004e5-73c3-4134-b4ad-9744884ca641",
-        "title": "Alice in Wonderland",
-        "author": "Lewis Carroll",
-        "pages": "192",
-        "status": "not read",
-        "dateFinished": null,
-        "dateAdded": new Date("2025-01-20"),
-        "coverColor": "hsla(194, 60%, 50%, 0.30)",
-    },
-];
+class Book {
+    #id;
+    #dateAdded;
 
-function book(title, author, pages, status, dateFinished) {
-    a
-    this.id = crypto.randomUUID();
+  constructor(title, author, pages, status, dateFinished, dateAdded, coverColor) {
+    this.#id = crypto.randomUUID();
+    this.#dateAdded = dateAdded ? new Date(dateAdded) : new Date();
+    
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.status = status;
     this.dateFinished = dateFinished;
-    this.dateAdded = new Date();
+    
+    if (coverColor) {
+        this.coverColor = coverColor;
+    } else {
+        const hue = Math.floor(Math.random() * 360);
+        const saturation = Math.floor(Math.random() * 30) + 50;
+        const lightness = Math.floor(Math.random() * 20) + 40;
+        this.coverColor = `hsla(${hue}, ${saturation}%, ${lightness}%, 0.3)`;
+    }
+  }
 
-    const hue = Math.floor(Math.random() * 360);
-    const saturation = Math.floor(Math.random() * 30) + 50;
-    const lightness = Math.floor(Math.random() * 20) + 40;
-    this.coverColor = `hsla(${hue}, ${saturation}%, ${lightness}%, 0.3)`;
+  get id() {
+    return this.#id;
+  }
+
+  get   () {
+    return this.#dateAdded;
+  }
 }
+
+let myLibrary = [
+    new Book (
+        "Harry Potter and Goblet of Fire", 
+        "J.K. Rowling", 
+        "636", 
+        "read", 
+        "2025-10-10",
+        "2025-01-15"
+    ),
+    new Book (
+        "Lord of The Ring", 
+        "J.R.R. Tolkien",
+        "636",
+        "read",
+        "2025-10-10",
+        "2025-01-15"
+        ),
+    new Book (
+        "To Kill a Mockingbird",
+        "Harper Lee",
+        "281",
+        "not read",
+        null,
+        "2025-01-17"
+    ),
+    new Book(
+        "Of Mice and Men",
+        "John Steinbeck",
+        "107",
+        "not read",
+        null,
+        "2025-01-18"
+    ),
+    new Book(
+        "Percy Jackson. The Lightning Thief",
+        "Rick Riordan",
+        "377",
+        "not read",
+        null,
+        "2025-01-19"
+    ),
+    new Book(
+        "Alice in Wonderland",
+        "Lewis Carroll",
+        "192",
+        "not read",
+        null,
+        "2025-01-20"
+    ),
+];
 
 function statusCheck() {
     if (!inputStatus.checked) {
@@ -136,14 +141,15 @@ function resetForm() {
 }
 
 function addBookToMyLibrary() {
-    let newBook = new book(
-        inputTitle.value, 
-        inputAuthor.value, 
-        inputPages.value, 
-        inputStatus.value, 
-        inputStatus.checked ? inputDate.value : null
-    );
-    return myLibrary.push(newBook);
+    const title = inputTitle.value;
+    const author = inputAuthor.value;
+    const pages = inputPages.value;
+    const status = inputStatus.value;
+    const dateFinished = inputStatus.checked ? inputDate.value : null;
+
+    let newBook = new Book(title, author, pages, status, dateFinished);
+
+    myLibrary.push(newBook);
 }
 
 function addAllBookCards() {
