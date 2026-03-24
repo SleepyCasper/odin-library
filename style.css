@@ -164,6 +164,19 @@ span {
     font-weight: bold;
 }
 
+span.error {
+    display: none;
+}
+
+span.error.active {
+    display: block;
+    font-weight: normal;
+    font-size: 1rem;
+    color: var(--color-danger);
+    padding: 0.6rem 0.3rem 0 0.3rem;
+    width: 100%;
+}
+
 nav button,
 #form button,
 #dialog-delete button {
@@ -239,6 +252,7 @@ dialog {
 }
 
 #form > .wrapper {
+    position: relative;
     display: flex;
     flex-direction: column;
 }

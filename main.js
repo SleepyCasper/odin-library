@@ -28,7 +28,12 @@ const elements = {
     inputStatus: document.getElementById("status"),
     inputDate: document.getElementById("date"),
     dateWrapper: document.getElementById("date-wrapper"),
-    inputCalendar: document.getElementById("date-finished")
+    inputCalendar: document.getElementById("date-finished"),
+    errors: {
+        title: document.getElementById("errorTitle"),
+        author: document.getElementById("errorAuthor"),
+        pages: document.getElementById("errorPages")
+    }
 };
 
 // --- BUSINESS LOGIC ---
@@ -97,6 +102,36 @@ function resetForm() {
     elements.dateWrapper.style.display = "none";
 }
 
+function showError(inputName) {
+    switch (inputName) {
+        case "title":
+            elements.errors.title.textContent = "You must enter the title!";
+            elements.errors.title.classList.add("active");
+            break;
+        case "author":
+            elements.errors.author.textContent = "You must enter the author name!";
+            elements.errors.author.classList.add("active");
+            break;
+        case "pages":
+            elements.errors.pages.textContent = "You must enter number of pages!";
+            elements.errors.pages.classList.add("active");
+            break;
+    }
+}
+
+function hideError(inputName) {
+    switch (inputName) {
+        case "title":
+            elements.errors.title.classList.remove("active");
+            break;
+        case "author":
+            elements.errors.author.classList.remove("active");
+            break;
+        case "pages":
+            elements.errors.pages.classList.remove("active");
+            break;
+    }
+}
 // --- INITIALIZE RENDERER ---
 const renderer = new Renderer(elements, {
     onReadStatusToggle: handleReadStatusToggle
@@ -110,22 +145,42 @@ elements.btnNew.addEventListener("click", () => {
 elements.inputStatus.addEventListener("change", statusCheck);
 
 elements.form.addEventListener("submit", (e) => {
+    const inputs = [
+        elements.inputTitle,
+        elements.inputAuthor,
+        elements.inputPages
+    ]
+
+    let isValid = true;
+
     e.preventDefault();
-    const formData = new FormData(elements.form);
-    const dateFinished = elements.inputStatus.checked ? elements.inputDate.value : null;
-    
-    const newBook = new Book(
-        formData.get("title"),
-        formData.get("author"),
-        formData.get("pages"),
-        elements.inputStatus.value,
-        dateFinished
-    );
-    
-    LibraryStore.add(newBook);
-    renderer.render();
-    elements.dialogNew.close();
-    resetForm();
+
+    inputs.forEach((input) => {
+        if(!input.validity.valid) {
+            showError(input.name);
+            isValid = false;
+        } else {
+            hideError(input.name);
+        }
+    })
+
+    if (isValid) {
+        const formData = new FormData(elements.form);
+        const dateFinished = elements.inputStatus.checked ? elements.inputDate.value : null;
+
+        const newBook = new Book(
+            formData.get("title"),
+            formData.get("author"),
+            formData.get("pages"),
+            elements.inputStatus.value,
+            dateFinished
+        );
+
+        LibraryStore.add(newBook);
+        renderer.render();
+        elements.dialogNew.close();
+        resetForm();
+    }
 });
 
 elements.btnCancel.addEventListener("click", () => {
